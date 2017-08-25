@@ -4,7 +4,7 @@
 // Pin 4: Vcc （5V)
 // Pin 3: GND
 
-// Using SoftSerial:
+// Using SoftSerial: （3.3V logical)
 //   Pin 2: int8_t swsTX （TX on MCU)
 //   Pin 1: int8_t swsRX  (RX on MCU)
 
