@@ -40,73 +40,73 @@ size_t dartWeesky::available(void) {
 
 
 dartWeesky::dartStatus dartWeesky::read() {
-    
-        if (available() < 15) {
-            //Serial.println("noDATA");
-            return noData;
-        }
-        //Serial.println("Try read:");
-        dartData thisFrame[15];
-        if (this->_dartSerial->readBytes(thisFrame, sizeof(thisFrame)) != sizeof(thisFrame)) {
-            //Serial.println("sizeof(thisFrame");
-            return frameLenMismatch;
-        };
 
-        if (thisFrame[0] != dartWeesky::sig_op) {
-            //Serial.println("sig_op Error");
-            return readError;
-        }
+	if (available() < 15) {
+		//Serial.println("noDATA");
+		return noData;
+	}
+	//Serial.println("Try read:");
+	dartData thisFrame[15];
+	if (this->_dartSerial->readBytes(thisFrame, sizeof(thisFrame)) != sizeof(thisFrame)) {
+		//Serial.println("sizeof(thisFrame");
+		return frameLenMismatch;
+	};
 
-        if (thisFrame[4] != dartWeesky::sig_md) {
-            //Serial.println("sig_md Error");
-            return readError;
-        }
+	if (thisFrame[0] != dartWeesky::sig_op) {
+		//Serial.println("sig_op Error");
+		return readError;
+	}
 
-        if (thisFrame[13] != dartWeesky::sig_ed1) {
-            //Serial.println("sig_ed1 Error");
-            return readError;
-        }
+	if (thisFrame[4] != dartWeesky::sig_md) {
+		//Serial.println("sig_md Error");
+		return readError;
+	}
 
-        if (thisFrame[14] != dartWeesky::sig_ed2) {
-            //Serial.println("sig_ed2 Error");
-            return readError;
-        }
+	if (thisFrame[13] != dartWeesky::sig_ed1) {
+		//Serial.println("sig_ed1 Error");
+		return readError;
+	}
 
-        byte checkbit = ~ (thisFrame[1] + thisFrame[2]) + 1;
-        if ( thisFrame[3] != checkbit ) {
-            // Serial.print("SumError: Exp=");
-            // Serial.print(thisFrame[3]);
-            // Serial.print(" Act=");
-            // Serial.println(checkbit);
-            return sumError;
-        }
+	if (thisFrame[14] != dartWeesky::sig_ed2) {
+		//Serial.println("sig_ed2 Error");
+		return readError;
+	}
 
-        this->HCHOdata = thisFrame[1] * 256 + thisFrame[2];
-        this->ZeroVolt = thisFrame[7] * 256 + thisFrame[8];
-        this->ADCVolt = thisFrame[9] * 256 + thisFrame[10];
+	byte checkbit = ~ (thisFrame[1] + thisFrame[2]) + 1;
+	if ( thisFrame[3] != checkbit ) {
+		// Serial.print("SumError: Exp=");
+		// Serial.print(thisFrame[3]);
+		// Serial.print(" Act=");
+		// Serial.println(checkbit);
+		return sumError;
+	}
+	
+	this->HCHOdata = thisFrame[1] * 256 + thisFrame[2];
+	this->ZeroVolt = thisFrame[7] * 256 + thisFrame[8];
+	this->ADCVolt = thisFrame[9] * 256 + thisFrame[10];
 
-        return OK;
-    }
+	return OK;
+}
 
 bool dartWeesky::waitForData(const unsigned int maxTime, const size_t nData) {
-    const auto t0 = millis();
-    if (nData == 0) {
-        for (; (millis() - t0) < maxTime; delay(1)) {
-            if (this->_dartSerial->available()) {
-                return true;
-            }
-        }
-        return this->_dartSerial->available();
-    }
+	const auto t0 = millis();
+	if (nData == 0) {
+		for (; (millis() - t0) < maxTime; delay(1)) {
+			if (this->_dartSerial->available()) {
+				return true;
+			}
+		}
+		return this->_dartSerial->available();
+	}
 
-    for (; (millis() - t0) < maxTime; delay(1)) {
-        if (available() >= nData) {
-            return true;
-        }
-    }
-    return available() >= nData;
+	for (; (millis() - t0) < maxTime; delay(1)) {
+		if (available() >= nData) {
+			return true;
+		}
+	}
+	return available() >= nData;
 }
 
 bool dartWeesky::adjustZeroVolt(void) {
-    return this->_dartSerial->write("AT+CLEAR\xDA\x0A");
+	return this->_dartSerial->write("AT+CLEAR\xDA\x0A");
 }
