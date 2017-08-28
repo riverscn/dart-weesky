@@ -32,7 +32,7 @@ void loop(void) {
 			Serial.println(newRead - lastRead);
 			lastRead = newRead;
 			float multival = 0.001;
-			float actHCHOdata = _dartWeesky.HCHOdata * multival;
+			float actHCHOdata = _dartWeesky.readHCHOdata() * multival;
 				Serial.print(actHCHOdata,3);
 				Serial.print("\t");
 				Serial.print("HCHO");
@@ -40,14 +40,14 @@ void loop(void) {
 				Serial.print("ug/m3");
 				Serial.print("]");
 				Serial.println();
-				Serial.print(_dartWeesky.ZeroVolt);
+				Serial.print(_dartWeesky.readZeroVolt());
 				Serial.print("\t");
 				Serial.print("ZeroVolt");
 				Serial.print(" [");
 				Serial.print("mV");
 				Serial.print("]");
 				Serial.println();
-				Serial.print(_dartWeesky.ADCVolt);
+				Serial.print(_dartWeesky.readADCVolt());
 				Serial.print("\t");
 				Serial.print("ADCVolt");
 				Serial.print(" [");

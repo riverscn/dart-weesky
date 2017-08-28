@@ -110,3 +110,13 @@ bool dartWeesky::waitForData(const unsigned int maxTime, const size_t nData) {
 bool dartWeesky::adjustZeroVolt(void) {
 	return this->_dartSerial->write("AT+CLEAR\xDA\x0A");
 }
+
+uint16_t dartWeesky::getHCHO(void) {
+	return this->HCHOdata;
+}
+uint16_t dartWeesky::getZeroVolt(void) {
+	return this->ZeroVolt;
+}
+uint16_t dartWeesky::getADCVolt(void) {
+	return this->ADCVolt;
+}

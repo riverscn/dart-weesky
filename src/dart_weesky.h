@@ -9,19 +9,18 @@
 //   Pin 1: int8_t swsRX  (RX on MCU)
 
 class dartWeesky {
-public:
-    typedef byte dartData;
-    uint16_t HCHOdata = 0;
-    uint16_t ZeroVolt = 0;
-    uint16_t ADCVolt = 0;
 private:
-    const byte sig_op = 0xAA;
-    const byte sig_md = 0x0A;
-    const byte sig_ed1 = 0x0D;
-    const byte sig_ed2 = 0x0A;
-    unsigned long timeout;
-    SoftwareSerial* _dartSerial;
-    static const decltype(timeout) timeoutPassive = 68;
+  typedef byte dartData;
+  uint16_t HCHOdata = 0;
+  uint16_t ZeroVolt = 0;
+  uint16_t ADCVolt = 0;
+  const byte sig_op = 0xAA;
+  const byte sig_md = 0x0A;
+  const byte sig_ed1 = 0x0D;
+  const byte sig_ed2 = 0x0A;
+  unsigned long timeout;
+  SoftwareSerial* _dartSerial;
+  static const decltype(timeout) timeoutPassive = 68;
 public:
 	enum dartStatus : uint8_t {
 		OK = 0,
@@ -44,4 +43,7 @@ public:
 	dartStatus read(void);
 	bool adjustZeroVolt(void);
   bool waitForData(const unsigned int maxTime, const size_t nData = 0);
+  uint16_t getHCHO(void);
+  uint16_t getZeroVolt(void);
+  uint16_t getADCVolt(void);
 };
