@@ -37,7 +37,7 @@ void loop(void) {
 				Serial.print("\t");
 				Serial.print("HCHO");
 				Serial.print(" [");
-				Serial.print("ug/m3");
+				Serial.print("mg/m3");
 				Serial.print("]");
 				Serial.println();
 				Serial.print(_dartWeesky.readZeroVolt());
